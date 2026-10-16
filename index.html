@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="theme-color" content="#A8D600">
+<meta name="color-scheme" content="light">
+<meta name="description" content="رستوران لیمو — سامانه سفارش غذای سازمانی">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- SEC: جلوگیری از index شدن صفحات حساس -->
+<meta name="robots" content="noindex, nofollow">
+<title>رستوران لیمو 🍋 | سفارش غذای سازمانی</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍋</text></svg>">
+</head>
+<body>
+
+<!-- ============================================================
+     GLOBAL LOADER
+     ============================================================ -->
+<div id="global-loader" class="global-loader hidden" aria-hidden="true" role="status">
+  <div class="loader-card">
+    <div class="spinner"></div>
+    <p class="loader-text">در حال پردازش...</p>
+  </div>
+</div>
+
+<!-- ============================================================
+     TOAST CONTAINER
+     ============================================================ -->
+<div id="toast-container" class="toast-container" role="region" aria-live="polite" aria-atomic="false"></div>
+
+<!-- ============================================================
+     MODAL ROOT
+     ============================================================ -->
+<div id="modal-root" class="modal-root hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-overlay" data-modal-close="overlay"></div>
+  <div class="modal-card" id="modal-card">
+    <div class="modal-header">
+      <h3 id="modal-title" class="modal-title">عنوان</h3>
+      <button class="modal-close" type="button" data-modal-close="button" aria-label="بستن پنجره">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- ============================================================
+       VIEW: CUSTOMER LOGIN
+       ============================================================ -->
+  <section id="view-customer-login" class="view auth-view hidden">
+    <div class="auth-bg-decor" aria-hidden="true">
+      <div class="decor-circle c1"></div>
+      <div class="decor-circle c2"></div>
+      <div class="decor-circle c3"></div>
+    </div>
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="brand-logo" aria-hidden="true">🍋</div>
+        <h1 class="brand-title">رستوران لیمو</h1>
+        <p class="brand-subtitle">سامانه سفارش غذای سازمانی</p>
+      </div>
+      <!-- مشتری: autocomplete="on" چون کد مشتری حساس نیست -->
+      <form id="form-customer-login" class="auth-form" autocomplete="on" novalidate>
+        <!-- شماره موبایل — بالای کد مشتری -->
+        <div class="field">
+          <label class="field-label" for="customer-phone-input">شماره موبایل</label>
+          <div class="input-wrap">
+            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <input id="customer-phone-input" name="phone" type="tel" class="input"
+                   placeholder="مثال: 09121234567" required
+                   maxlength="16" autocomplete="tel" inputmode="tel"
+                   spellcheck="false" dir="ltr"
+                   aria-describedby="customer-phone-hint">
+          </div>
+          <p class="field-hint" id="customer-phone-hint" role="status"></p>
+        </div>
+
+        <!-- کد مشتری -->
+        <div class="field">
+          <label class="field-label" for="customer-code-input">کد مشتری</label>
+          <div class="input-wrap">
+            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <input id="customer-code-input" name="customer_code" type="text" class="input"
+                   placeholder="مثال: LIMO-1001" required maxlength="64"
+                   autocomplete="username" inputmode="text"
+                   autocapitalize="characters" spellcheck="false"
+                   aria-describedby="customer-login-hint">
+          </div>
+          <p class="field-hint" id="customer-login-hint" role="status"></p>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg" id="customer-login-btn">
+          <span class="btn-label">ورود به سامانه</span>
+          <span class="btn-loading hidden" aria-hidden="true"><span class="spinner spinner-sm"></span> در حال ورود...</span>
+        </button>
+      </form>
+      <div class="auth-footer">
+        <a href="/admin" class="link-muted">ورود به پنل مدیریت</a>
+      </div>
+    </div>
+    <p class="auth-copyright">© رستوران لیمو</p>
+  </section>
+
+  <!-- ============================================================
+       VIEW: ADMIN LOGIN
+       SEC: autocomplete="off" برای جلوگیری از ذخیره رمز ادمین
+       ============================================================ -->
+  <section id="view-admin-login" class="view auth-view hidden">
+    <div class="auth-bg-decor" aria-hidden="true">
+      <div class="decor-circle c1"></div>
+      <div class="decor-circle c2"></div>
+      <div class="decor-circle c3"></div>
+    </div>
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="brand-logo" aria-hidden="true">🍋</div>
+        <h1 class="brand-title">پنل مدیریت</h1>
+        <p class="brand-subtitle">رستوران لیمو</p>
+      </div>
+      <form id="form-admin-login" class="auth-form" autocomplete="off" novalidate>
+        <div class="field">
+          <label class="field-label" for="admin-username">نام کاربری</label>
+          <div class="input-wrap">
+            <input id="admin-username" name="username" type="text" class="input"
+                   required autocomplete="off" inputmode="text"
+                   autocapitalize="off" spellcheck="false" maxlength="64">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="admin-password">رمز عبور</label>
+          <div class="input-wrap">
+            <input id="admin-password" name="password" type="password" class="input"
+                   required autocomplete="off" minlength="1" maxlength="128">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg" id="admin-login-btn">
+          <span class="btn-label">ورود به پنل مدیریت</span>
+          <span class="btn-loading hidden" aria-hidden="true"><span class="spinner spinner-sm"></span> در حال ورود...</span>
+        </button>
+      </form>
+      <div class="auth-footer">
+        <a href="/" class="link-muted">بازگشت به صفحه مشتری</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VIEW: FORCE CHANGE CREDENTIALS
+       نام کاربری اختیاری، رمز اجباری
+       ============================================================ -->
+  <section id="view-force-change" class="view auth-view hidden">
+    <div class="auth-bg-decor" aria-hidden="true">
+      <div class="decor-circle c1"></div>
+      <div class="decor-circle c2"></div>
+      <div class="decor-circle c3"></div>
+    </div>
+    <div class="auth-card auth-card-wide">
+      <div class="auth-brand">
+        <div class="brand-logo" aria-hidden="true">🔐</div>
+        <h1 class="brand-title">حساب مدیر نیاز به تنظیم اولیه دارد</h1>
+        <p class="brand-subtitle">برای افزایش امنیت سیستم، لطفاً اطلاعات ورود پیش‌فرض را تغییر دهید.</p>
+      </div>
+      <div class="force-change-notice" role="alert">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <div>
+          <strong>دسترسی محدود</strong>
+          <p>تا زمانی که رمز عبور پیش‌فرض را تغییر ندهید، امکان استفاده کامل از پنل وجود ندارد. تغییر نام کاربری اختیاری است.</p>
+        </div>
+      </div>
+      <form id="form-force-change" class="auth-form" autocomplete="off" novalidate>
+        <div class="field">
+          <label class="field-label" for="fc-current-username">نام کاربری فعلی</label>
+          <input id="fc-current-username" type="text" class="input input-readonly" readonly value="" tabindex="-1" aria-readonly="true">
+        </div>
+        <div class="field">
+          <label class="field-label" for="fc-current-password">رمز عبور فعلی <span class="req">*</span></label>
+          <div class="input-wrap has-eye">
+            <input id="fc-current-password" name="current_password" type="password" class="input"
+                   required autocomplete="current-password" maxlength="128"
+                   placeholder="رمز عبور فعلی خود را وارد کنید">
+            <button type="button" class="input-eye" data-toggle-password="fc-current-password" aria-label="نمایش رمز">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="fc-new-username">نام کاربری جدید (اختیاری)</label>
+          <input id="fc-new-username" name="new_username" type="text" class="input"
+                 autocomplete="off" inputmode="text" autocapitalize="off" spellcheck="false"
+                 placeholder="در صورت تمایل به تغییر، حداقل ۴ کاراکتر" maxlength="64">
+          <p class="field-hint">اگر نمی‌خواهید نام کاربری را تغییر دهید، این فیلد را خالی بگذارید.</p>
+        </div>
+        <div class="field">
+          <label class="field-label" for="fc-new-password">رمز عبور جدید <span class="req">*</span></label>
+          <div class="input-wrap has-eye">
+            <input id="fc-new-password" name="new_password" type="password" class="input"
+                   required autocomplete="new-password" minlength="8" maxlength="128"
+                   placeholder="حداقل ۸ کاراکتر">
+            <button type="button" class="input-eye" data-toggle-password="fc-new-password" aria-label="نمایش رمز">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="password-strength" id="fc-strength" data-level="0" aria-live="polite">
+            <div class="password-strength-bar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
+              <div class="password-strength-fill" id="fc-strength-fill"></div>
+            </div>
+            <div class="password-strength-meta">
+              <span class="password-strength-label" id="fc-strength-label">قدرت رمز عبور</span>
+              <span class="password-strength-score" id="fc-strength-score"></span>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="fc-confirm-password">تکرار رمز عبور جدید <span class="req">*</span></label>
+          <div class="input-wrap has-eye">
+            <input id="fc-confirm-password" name="confirm_password" type="password" class="input"
+                   required autocomplete="new-password" minlength="8" maxlength="128"
+                   placeholder="تکرار رمز عبور جدید"
+                   aria-describedby="fc-confirm-error">
+            <button type="button" class="input-eye" data-toggle-password="fc-confirm-password" aria-label="نمایش رمز">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <p class="field-hint field-hint-error hidden" id="fc-confirm-error" role="alert">رمز عبور جدید و تکرار آن یکسان نیستند.</p>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg" id="fc-submit-btn">
+          <span class="btn-label">ذخیره و ورود به پنل</span>
+          <span class="btn-loading hidden" aria-hidden="true"><span class="spinner spinner-sm"></span> در حال ذخیره...</span>
+        </button>
+        <button type="button" class="btn btn-ghost btn-block" id="fc-logout-btn">خروج از حساب</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VIEW: CUSTOMER APP
+       ============================================================ -->
+  <section id="view-customer-app" class="view app-view hidden">
+    <header class="cust-header">
+      <div class="cust-header-inner">
+        <div class="cust-header-brand">
+          <span class="brand-logo-sm" aria-hidden="true">🍋</span>
+          <div>
+            <div class="cust-brand-name">رستوران لیمو</div>
+            <div class="cust-brand-company" id="cust-company-name">—</div>
+          </div>
+        </div>
+        <button type="button" class="icon-btn" id="cust-logout-btn" aria-label="خروج از حساب">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+      <div class="cust-header-meta">
+        <div class="cust-date" id="cust-today-label">—</div>
+        <div class="cust-window-badge" id="cust-window-badge"></div>
+      </div>
+    </header>
+
+    <main class="cust-main">
+      <div class="cust-tab" id="cust-tab-menu">
+        <div class="section-head">
+          <h2 class="section-title">منوی امروز</h2>
+          <p class="section-sub" id="cust-menu-sub">—</p>
+        </div>
+        <div class="category-tabs" id="category-tabs" role="tablist" aria-label="دسته‌بندی محصولات">
+          <button class="cat-tab is-active" data-cat="all" type="button" role="tab" aria-selected="true">همه</button>
+          <button class="cat-tab" data-cat="food" type="button" role="tab" aria-selected="false">غذا</button>
+          <button class="cat-tab" data-cat="drink" type="button" role="tab" aria-selected="false">نوشیدنی</button>
+          <button class="cat-tab" data-cat="dessert" type="button" role="tab" aria-selected="false">دسر</button>
+        </div>
+        <div id="menu-container" class="menu-grid" role="region" aria-label="لیست محصولات"></div>
+      </div>
+
+      <div class="cust-tab hidden" id="cust-tab-orders">
+        <div class="section-head">
+          <h2 class="section-title">سفارش‌های من</h2>
+          <p class="section-sub">سابقه سفارش‌ها و وضعیت آن‌ها</p>
+        </div>
+        <div id="customer-orders-container" class="orders-list"></div>
+        <div id="customer-orders-pagination" class="pagination hidden"></div>
+      </div>
+
+      <div class="cust-tab hidden" id="cust-tab-profile">
+        <div class="section-head">
+          <h2 class="section-title">پروفایل شرکت</h2>
+          <p class="section-sub">اطلاعات حساب شما</p>
+        </div>
+        <div class="profile-card" id="customer-profile-card"></div>
+      </div>
+    </main>
+
+    <div class="bottom-order-bar hidden" id="bottom-order-bar">
+      <div class="bob-inner">
+        <div class="bob-info">
+          <span class="bob-count" id="bob-count">0</span>
+          <span class="bob-label">آیتم انتخاب شده</span>
+        </div>
+        <button type="button" class="btn btn-primary" id="bob-open-summary">
+          مشاهده سفارش
+        </button>
+      </div>
+    </div>
+
+    <nav class="bottom-nav" aria-label="ناوبری مشتری">
+      <button class="bn-item is-active" data-cust-tab="menu" type="button" aria-label="منو">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>منو</span>
+      </button>
+      <button class="bn-item" data-cust-tab="orders" type="button" aria-label="سفارش‌ها">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span>سفارش‌ها</span>
+      </button>
+      <button class="bn-item" data-cust-tab="profile" type="button" aria-label="پروفایل">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>پروفایل</span>
+      </button>
+    </nav>
+  </section>
+
+  <!-- ============================================================
+       VIEW: ADMIN APP
+       ============================================================ -->
+  <section id="view-admin-app" class="view app-view hidden">
+    <header class="admin-mobile-header">
+      <button type="button" class="icon-btn" id="admin-drawer-toggle" aria-label="باز کردن منوی ناوبری" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="admin-mobile-title">پنل مدیریت لیمو</div>
+      <span class="brand-logo-sm" aria-hidden="true">🍋</span>
+    </header>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar" id="admin-sidebar">
+        <div class="sidebar-brand">
+          <span class="brand-logo-sm" aria-hidden="true">🍋</span>
+          <div>
+            <div class="sidebar-brand-name">رستوران لیمو</div>
+            <div class="sidebar-brand-sub">پنل مدیریت</div>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="بخش‌های پنل">
+          <button class="sn-item is-active" data-admin-section="dashboard" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span>داشبورد</span>
+          </button>
+          <button class="sn-item" data-admin-section="requests" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>درخواست‌ها</span>
+            <span class="sn-badge hidden" id="sidebar-pending-badge">0</span>
+          </button>
+          <button class="sn-item" data-admin-section="customers" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>مشتریان</span>
+          </button>
+          <button class="sn-item" data-admin-section="menu" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+            <span>منو</span>
+          </button>
+          <button class="sn-item" data-admin-section="capacity" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+            <span>ظرفیت‌ها</span>
+          </button>
+          <button class="sn-item" data-admin-section="downloads" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>دانلودها</span>
+          </button>
+          <button class="sn-item" data-admin-section="settings" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>تنظیمات</span>
+          </button>
+          <button class="sn-item" data-admin-section="cleanup" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            <span>پاک‌سازی داده‌ها</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button class="sn-item sn-item-danger" id="admin-logout-btn" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>خروج از پنل</span>
+          </button>
+        </div>
+      </aside>
+
+      <div class="sidebar-backdrop hidden" id="sidebar-backdrop" aria-hidden="true"></div>
+
+      <main class="admin-main" id="admin-main">
+        <!-- ====== DASHBOARD ====== -->
+        <div class="admin-section" id="section-dashboard">
+          <div class="section-head">
+            <h2 class="section-title">داشبورد</h2>
+            <p class="section-sub" id="dashboard-sub">خلاصه وضعیت امروز</p>
+          </div>
+          <div class="kpi-grid" id="kpi-grid">
+            <div class="kpi-card"><div class="kpi-icon kpi-icon-warn"></div><div class="kpi-value" id="kpi-pending">—</div><div class="kpi-label">در انتظار تأیید</div></div>
+            <div class="kpi-card"><div class="kpi-icon kpi-icon-ok"></div><div class="kpi-value" id="kpi-approved">—</div><div class="kpi-label">تأیید شده امروز</div></div>
+            <div class="kpi-card"><div class="kpi-icon kpi-icon-danger"></div><div class="kpi-value" id="kpi-rejected">—</div><div class="kpi-label">رد شده امروز</div></div>
+            <div class="kpi-card"><div class="kpi-icon kpi-icon-info"></div><div class="kpi-value" id="kpi-customers">—</div><div class="kpi-label">مشتریان فعال</div></div>
+            <div class="kpi-card"><div class="kpi-icon kpi-icon-info"></div><div class="kpi-value" id="kpi-products">—</div><div class="kpi-label">محصولات فعال</div></div>
+            <div class="kpi-card"><div class="kpi-icon kpi-icon-warn"></div><div class="kpi-value" id="kpi-window">—</div><div class="kpi-label">وضعیت سفارش‌گیری</div></div>
+          </div>
+        </div>
+
+        <!-- ====== REQUESTS ====== -->
+        <div class="admin-section hidden" id="section-requests">
+          <div class="section-head section-head-row">
+            <div>
+              <h2 class="section-title">درخواست‌ها</h2>
+              <p class="section-sub">مدیریت سفارش‌های دریافتی</p>
+            </div>
+            <div class="filters">
+              <select class="input input-sm" id="filter-order-status" aria-label="فیلتر وضعیت">
+                <option value="">همه وضعیت‌ها</option>
+                <option value="PENDING">در انتظار تأیید</option>
+                <option value="APPROVED">تأیید شده</option>
+                <option value="REJECTED">رد شده</option>
+                <option value="CANCELLED">لغو شده</option>
+              </select>
+              <input type="date" class="input input-sm" id="filter-order-date" aria-label="فیلتر تاریخ">
+              <button class="btn btn-ghost btn-sm" id="btn-refresh-orders" type="button">بازخوانی</button>
+            </div>
+          </div>
+          <div id="admin-orders-container" class="admin-orders"></div>
+          <div id="admin-orders-pagination" class="pagination hidden"></div>
+        </div>
+
+        <!-- ====== CUSTOMERS ====== -->
+        <div class="admin-section hidden" id="section-customers">
+          <div class="section-head section-head-row">
+            <div>
+              <h2 class="section-title">مشتریان</h2>
+              <p class="section-sub">مدیریت شرکت‌ها و کدهای مشتری</p>
+            </div>
+            <div class="filters">
+              <input type="text" class="input input-sm" id="search-customers" placeholder="جستجو..." inputmode="search" aria-label="جستجوی مشتری">
+              <button class="btn btn-primary btn-sm" id="btn-new-customer" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                افزودن مشتری
+              </button>
+            </div>
+          </div>
+          <div id="admin-customers-container" class="admin-customers-grid"></div>
+          <div id="admin-customers-pagination" class="pagination hidden"></div>
+        </div>
+
+        <!-- ====== MENU / PRODUCTS ====== -->
+        <div class="admin-section hidden" id="section-menu">
+          <div class="section-head section-head-row">
+            <div>
+              <h2 class="section-title">مدیریت منو</h2>
+              <p class="section-sub">محصولات، دسته‌بندی و روزهای فعال</p>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btn-new-product" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              افزودن محصول
+            </button>
+          </div>
+          <div class="tabs" id="menu-category-tabs" role="tablist">
+            <button class="tab is-active" data-mcat="all" type="button" role="tab" aria-selected="true">همه</button>
+            <button class="tab" data-mcat="food" type="button" role="tab" aria-selected="false">غذا</button>
+            <button class="tab" data-mcat="drink" type="button" role="tab" aria-selected="false">نوشیدنی</button>
+            <button class="tab" data-mcat="dessert" type="button" role="tab" aria-selected="false">دسر</button>
+          </div>
+          <div id="admin-products-container" class="admin-products-grid"></div>
+        </div>
+
+        <!-- ====== CAPACITY ====== -->
+        <div class="admin-section hidden" id="section-capacity">
+          <div class="section-head section-head-row">
+            <div>
+              <h2 class="section-title">ظرفیت‌ها</h2>
+              <p class="section-sub" id="capacity-sub">وضعیت ظرفیت امروز</p>
+            </div>
+            <button class="btn btn-ghost btn-sm" id="btn-refresh-capacity" type="button">بازخوانی</button>
+          </div>
+          <div id="admin-capacity-container" class="admin-capacity-grid"></div>
+        </div>
+
+        <!-- ====== DOWNLOADS ====== -->
+        <div class="admin-section hidden" id="section-downloads">
+          <div class="section-head">
+            <h2 class="section-title">دانلودها</h2>
+            <p class="section-sub">دریافت گزارش سفارش‌ها به‌صورت CSV</p>
+          </div>
+          <div class="card">
+            <div class="field">
+              <label class="field-label" for="report-date">تاریخ سفارش‌ها</label>
+              <input type="date" class="input" id="report-date" aria-label="تاریخ گزارش">
+            </div>
+            <button class="btn btn-primary" id="btn-download-csv" type="button">
+              دانلود فایل CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- ====== SETTINGS (شامل تنظیمات + امنیت) ====== -->
+        <div class="admin-section hidden" id="section-settings">
+          <div class="section-head">
+            <h2 class="section-title">تنظیمات</h2>
+            <p class="section-sub">پیکربندی ساعات سفارش‌گیری، امنیت و اطلاعات سیستم</p>
+          </div>
+
+          <div class="tabs" id="settings-tabs" role="tablist">
+            <button class="tab is-active" data-settings-tab="general" type="button" role="tab" aria-selected="true">تنظیمات سفارش‌گیری</button>
+            <button class="tab" data-settings-tab="security" type="button" role="tab" aria-selected="false">🔐 امنیت و حساب کاربری</button>
+          </div>
+
+          <div class="settings-panel" id="settings-panel-general">
+            <div class="card" id="settings-card"></div>
+          </div>
+
+          <div class="settings-panel hidden" id="settings-panel-security">
+            <div class="security-card">
+              <div class="security-card-head">
+                <div class="security-card-icon" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="security-card-title">امنیت و حساب کاربری</h3>
+                  <p class="security-card-sub">مدیریت اطلاعات ورود و امنیت حساب مدیر</p>
+                </div>
+              </div>
+
+              <div class="security-username-display">
+                <span class="security-username-label">👤 نام کاربری فعلی</span>
+                <span class="security-username-value" id="sec-current-username">—</span>
+              </div>
+
+              <form id="form-change-credentials" class="security-form" autocomplete="off" novalidate>
+                <div class="field">
+                  <label class="field-label" for="sec-new-username">نام کاربری جدید (اختیاری)</label>
+                  <input id="sec-new-username" name="new_username" type="text" class="input"
+                         autocomplete="off" inputmode="text"
+                         autocapitalize="off" spellcheck="false"
+                         placeholder="در صورت تمایل به تغییر، نام کاربری جدید را وارد کنید" maxlength="64">
+                  <p class="field-hint">اگر نمی‌خواهید نام کاربری را تغییر دهید، این فیلد را خالی بگذارید.</p>
+                </div>
+
+                <div class="field">
+                  <label class="field-label" for="sec-current-password">رمز عبور فعلی <span class="req">*</span></label>
+                  <div class="input-wrap has-eye">
+                    <input id="sec-current-password" name="current_password" type="password" class="input"
+                           required autocomplete="current-password" maxlength="128"
+                           placeholder="برای تأیید هویت خود، رمز فعلی را وارد کنید">
+                    <button type="button" class="input-eye" data-toggle-password="sec-current-password" aria-label="نمایش رمز">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="field-label" for="sec-new-password">رمز عبور جدید (اختیاری)</label>
+                  <div class="input-wrap has-eye">
+                    <input id="sec-new-password" name="new_password" type="password" class="input"
+                           autocomplete="new-password" minlength="8" maxlength="128"
+                           placeholder="در صورت تمایل به تغییر، حداقل ۸ کاراکتر وارد کنید">
+                    <button type="button" class="input-eye" data-toggle-password="sec-new-password" aria-label="نمایش رمز">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                  </div>
+                  <div class="password-strength" id="sec-strength" data-level="0" aria-live="polite">
+                    <div class="password-strength-bar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
+                      <div class="password-strength-fill" id="sec-strength-fill"></div>
+                    </div>
+                    <div class="password-strength-meta">
+                      <span class="password-strength-label" id="sec-strength-label">قدرت رمز عبور</span>
+                      <span class="password-strength-score" id="sec-strength-score"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="field-label" for="sec-confirm-password">تکرار رمز عبور جدید</label>
+                  <div class="input-wrap has-eye">
+                    <input id="sec-confirm-password" name="confirm_password" type="password" class="input"
+                           autocomplete="new-password" minlength="8" maxlength="128"
+                           placeholder="فقط در صورت تغییر رمز عبور"
+                           aria-describedby="sec-confirm-error">
+                    <button type="button" class="input-eye" data-toggle-password="sec-confirm-password" aria-label="نمایش رمز">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                  </div>
+                  <p class="field-hint field-hint-error hidden" id="sec-confirm-error" role="alert">رمز عبور جدید و تکرار آن یکسان نیستند.</p>
+                </div>
+
+                <div class="security-actions">
+                  <button type="submit" class="btn btn-primary btn-lg" id="sec-save-btn">
+                    <span class="btn-label">ذخیره تغییرات</span>
+                    <span class="btn-loading hidden"><span class="spinner spinner-sm"></span> در حال ذخیره...</span>
+                  </button>
+                  <button type="button" class="btn btn-ghost" id="sec-reset-btn">پاک‌سازی فرم</button>
+                </div>
+              </form>
+
+              <div class="security-note">
+                <span>پس از تغییر رمز عبور، سایر دستگاه‌ها از حساب خارج می‌شوند.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== CLEANUP ====== -->
+        <div class="admin-section hidden" id="section-cleanup">
+          <div class="section-head">
+            <h2 class="section-title">پاک‌سازی داده‌ها</h2>
+            <p class="section-sub">حذف ایمن سفارش‌های قدیمی با ایجاد Backup</p>
+          </div>
+          <div class="card warn-card">
+            <div class="warn-icon">⚠</div>
+            <div>
+              <p class="warn-title">توجه: این عملیات بازگشت‌پذیر نیست</p>
+              <p class="warn-text">قبل از پاک‌سازی، یک نسخه پشتیبان ساخته می‌شود. برای تأیید، رمز عبور فعلی خود را وارد کنید.</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="field">
+              <label class="field-label" for="cleanup-before-date">حذف سفارش‌های قبل از تاریخ <span class="req">*</span></label>
+              <input type="date" class="input" id="cleanup-before-date" aria-label="تاریخ مرجع پاک‌سازی">
+              <p class="field-hint">تاریخ باید قبل از امروز باشد.</p>
+            </div>
+            <!-- SEC: فیلد رمز عبور برای تأیید پاک‌سازی -->
+            <div class="field">
+              <label class="field-label" for="cleanup-current-password">رمز عبور فعلی <span class="req">*</span></label>
+              <div class="input-wrap has-eye">
+                <input id="cleanup-current-password" name="current_password" type="password" class="input"
+                       autocomplete="current-password" maxlength="128"
+                       placeholder="برای تأیید، رمز عبور فعلی خود را وارد کنید"
+                       aria-describedby="cleanup-password-hint">
+                <button type="button" class="input-eye" data-toggle-password="cleanup-current-password" aria-label="نمایش رمز">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+              <p class="field-hint" id="cleanup-password-hint">این عملیات بازگشت‌پذیر نیست و نیاز به تأیید هویت دارد.</p>
+            </div>
+            <button class="btn btn-danger" id="btn-cleanup" type="button">
+              ایجاد Backup و پاک‌سازی
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+</div>
+
+<script src="/app.js" defer></script>
+</body>
+</html>
