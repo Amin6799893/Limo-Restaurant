@@ -1,135 +1,132 @@
 # LIMO — Corporate Meal Ordering Platform
 
-**A web-based B2B meal ordering and management system designed for companies, factories, and corporate customers.**
+**A corporate meal ordering and management system designed for companies, factories, and organizations.**
 
-LIMO streamlines daily meal ordering by connecting corporate customers with a centralized food-ordering and administration platform. It focuses on simplicity, controlled ordering, capacity management, and efficient administration.
+LIMO is a web-based B2B platform that simplifies daily meal ordering for corporate customers. It provides a customer-facing ordering interface and an administrative workflow for managing customer accounts, daily menus, order capacity, and reservation approvals.
 
-## Overview
-
-LIMO is a corporate food-ordering platform built for organizations that provide meals to employees or manage recurring meal orders for their workforce.
-
-Unlike a public restaurant website, LIMO operates through an administrator-managed customer system. Authorized customers can access the daily menu and submit meal requests, while administrators manage customers, menus, order capacity, and order approvals.
-
-The project is designed around a simple customer experience and a centralized administrative workflow.
+Unlike a public restaurant website, LIMO is designed for organizations with administrator-managed customer access and controlled ordering workflows.
 
 ## Key Features
 
 ### Customer Portal
+- Customer access using a registered phone number and assigned customer code.
+- Daily menu viewing.
+- Availability-focused meal selection without displaying prices.
+- Meal request submission subject to ordering rules and capacity.
+- A streamlined interface designed for everyday use.
 
-- **Controlled Customer Access:** Customers are created and managed by an administrator; public self-registration is not part of the workflow.
-- **Customer Authentication:** Customer access uses the assigned customer code and registered phone number.
-- **Daily Menu:** Customers can view the menu available for the current day.
-- **Availability-Based Ordering:** The customer interface focuses on menu availability rather than displaying meal prices.
-- **Order Submission:** Customers can submit meal requests subject to the system's ordering rules and available capacity.
-- **Clear User Experience:** A streamlined interface helps customers understand the available options and their order status.
-
-### Administrative Management
-
-- **Customer Management:** Maintain corporate customer records, including names, phone numbers, addresses, and customer codes.
-- **Daily Menu Management:** Manage the menu available for the current day.
-- **Capacity Management:** Control the number of meal requests that can be accepted.
-- **Order Management:** Review and manage incoming meal requests.
-- **Approval Workflow:** Reservations requiring administrative approval can be reviewed by the administrator.
-- **Operational Controls:** Configure and manage the platform's ordering workflow.
+### Administration
+- Customer account management.
+- Management of customer contact details and customer codes.
+- Daily menu management.
+- Order capacity controls.
+- Review and approval of reservations.
+- Centralized management of the ordering workflow.
 
 ### Business Rules
-
-- **Daily Menu:** Only the current day's menu is presented to customers.
-- **Friday Closure:** Ordering is disabled on Fridays.
-- **Capacity Control:** Requests must respect the configured ordering capacity.
-- **Administrator-Controlled Accounts:** Customer accounts are created by the administrator rather than through public registration.
-- **Customer Data Persistence:** Resetting operational data should preserve customer records.
+- Customers are created by an administrator; public self-registration is not part of the intended workflow.
+- The customer portal displays the current day's menu.
+- Ordering is disabled on Fridays.
+- Orders are subject to configured capacity limits.
+- Operational resets are intended to preserve customer records.
 
 ## Technology Stack
 
-- **Backend:** PHP 8
-- **Database:** SQLite
+- **Backend:** PHP
 - **Frontend:** HTML5, CSS3, JavaScript
-- **Database Access:** PHP SQLite support, using the database access method implemented in the project
-- **Deployment Target:** PHP-compatible web hosting, including cPanel
+- **Application API:** PHP
+- **Web Server Configuration:** Apache `.htaccess`
+- **Deployment Target:** PHP-compatible hosting, including cPanel
 
-## User Interface
-
-LIMO follows a clean, mobile-friendly design direction intended to make daily ordering straightforward.
-
-The visual identity uses a lime-green and icy-white color palette, with an emphasis on readability, clear order status, and simple navigation.
-
-The interface is designed around two main areas:
-
-- **Customer Portal:** Access to the daily menu and meal-ordering workflow.
-- **Administration Panel:** Tools for managing customers, menus, capacity, and orders.
+The database engine and specific runtime requirements should be confirmed against the current source code before deployment.
 
 ## Project Structure
 
-The repository may contain the following application files and directories, depending on the deployed version:
+```text
+LIMO/
+├── api.php
+├── main.php
+├── index.html
+├── app.js
+├── style.css
+├── .htaccess
+├── data/              # Application data — review before publishing
+├── backups/           # Backup files — do not publish private data
+└── _limo_backups/     # Additional backups — review before publishing
+```
 
-| File or Directory | Purpose |
+### Main Components
+
+| File or Directory | Responsibility |
 |---|---|
-| `index.php` | PHP entry point, if used by the current version |
-| `main.php` | Main application logic |
-| `api.php` | Application API endpoints |
-| `router.php` | Request routing |
-| `index.html` | Frontend page structure |
-| `app.js` | Client-side interaction and application logic |
-| `style.css` | User interface styling |
-| `data/` | Application data, where applicable |
-| `backups/` | Backup storage, where applicable |
-| `.htaccess` | Apache configuration, where applicable |
+| `main.php` | Main PHP application logic |
+| `api.php` | Backend API and request handling |
+| `index.html` | Customer-facing page structure |
+| `app.js` | Client-side interactions and application behavior |
+| `style.css` | Layout, styling, and responsive interface |
+| `.htaccess` | Apache rules and server configuration |
+| `data/` | Application data, depending on the implementation |
+| `backups/` | Backup storage; exclude private or production data from public releases |
+| `_limo_backups/` | Additional backup storage; inspect before publishing |
 
-The actual repository structure may differ. Refer to the committed source files for the implementation details of the current version.
+## User Interface
 
-## Installation and Deployment
+LIMO uses a lime-green and icy-white visual direction, emphasizing readability, clear navigation, and a straightforward ordering experience.
 
-LIMO is intended for deployment on a PHP-compatible hosting environment.
+The application is designed around two primary workflows:
 
-A typical deployment process includes:
+- **Customer workflow:** Access the daily menu and submit meal requests.
+- **Administrative workflow:** Manage customers, menus, capacity, and order approvals.
 
-1. Configure a compatible PHP 8 runtime.
-2. Verify that SQLite support is enabled.
-3. Upload the application files to the hosting environment.
-4. Configure the application's database and writable data directories.
-5. Apply the required file permissions and server configuration.
-6. Configure the administrator account securely.
-7. Test customer authentication, daily menus, ordering capacity, approval workflows, and Friday closure.
+## Deployment
 
-Exact installation commands and configuration requirements depend on the current implementation and should be verified against the source code before deployment.
+The project is structured as a PHP-based web application with a browser-based frontend.
 
-## Security Considerations
+Before deployment:
 
-Security is important because the platform may handle customer contact details and corporate ordering information.
+1. Configure a compatible PHP environment.
+2. Verify the required PHP extensions and database configuration.
+3. Upload the application files to a compatible web host.
+4. Configure writable application data directories.
+5. Review `.htaccess` rules and server permissions.
+6. Secure administrator access and session handling.
+7. Test customer authentication, menu availability, capacity limits, approval workflows, and Friday closure.
 
-- Do not publish database files containing real customer data.
-- Never commit passwords, API keys, or other secrets.
-- Protect administrative routes and sessions.
-- Validate customer input on the server side.
-- Enforce ordering capacity and business rules on the backend.
-- Restrict access to database files, backups, and application configuration.
-- Change default administrator credentials before deployment if defaults are present.
+Exact installation steps depend on the current implementation and hosting configuration.
+
+## Security and Privacy
+
+Because LIMO may process customer contact details and corporate ordering information, security and privacy are important.
+
+- Do not publish production databases or real customer records.
+- Exclude private backups and configuration files.
+- Never commit passwords, API keys, or other credentials.
+- Protect administrative operations and authentication sessions.
+- Validate requests on the server side.
+- Enforce capacity limits and ordering rules on the backend.
+- Review Apache rules and file permissions before deployment.
 
 ## Project Goals
 
-LIMO aims to provide a practical, maintainable solution for organizations that need a controlled daily meal-ordering workflow.
+LIMO aims to make corporate meal ordering more organized and manageable by providing:
 
-Its core goals are:
-
-- Simplifying corporate meal ordering
-- Centralizing customer and order management
-- Enforcing daily ordering rules
-- Preventing orders from exceeding available capacity
-- Providing a clear and accessible interface
-- Supporting deployment on conventional web hosting
+- Centralized customer administration
+- Daily menu management
+- Controlled meal ordering
+- Capacity-aware reservations
+- Administrative approval workflows
+- A simple, accessible user experience
 
 ## Project Status
 
-LIMO is a corporate software project. Its current implementation and deployment readiness should be evaluated against the source code and the capabilities available in the deployed version.
+LIMO is a corporate software project. Its implemented functionality and deployment requirements should be verified against the source code in the repository.
 
 ## License
 
-No open-source license has been specified. All rights remain with the respective rights holders unless a license is added to this repository.
+No open-source license has been specified. All rights remain with the respective rights holders unless a license is added.
 
 ## Author
 
 **Amin6799893**
 
-GitHub: [github.com/Amin6799893](https://github.com/Amin6799893)
-
+GitHub: https://github.com/Amin6799893
